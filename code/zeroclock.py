@@ -1,9 +1,16 @@
-import time
+
+from model import ClockModel
+from view import ClockView
+from controller import ClockController
 
 print("Hello World, I am a clock!")
 
+model = ClockModel()
+view = ClockView()
+controller = ClockController(model, view)
+
 while True:
-    t =  time.localtime()
-    print ("its", time.strftime("%H:%M:%S", t))
-    time.sleep(2)
+    
+    controller.show_time()
+    controller.sleep()
 
