@@ -1,4 +1,4 @@
-Because it isn't possible to run Visual Studio Code or use remote-ssh extension on Raspberry Pi Zero W (https://forums.raspberrypi.com/viewtopic.php?t=296434), using the following instructions, you can work from a Windows 11 machine on a remote folder mounted locally. In this way you will work on Windows 10 machine and VS code as the project is local, but via ssh you can run on pizero (debugging not possible).
+Because it isn't possible to run Visual Studio Code or use remote-ssh extension on Raspberry Pi Zero W (https://forums.raspberrypi.com/viewtopic.php?t=296434), using the following instructions, you can work from a Windows 11 machine on a remote folder mounted locally. In this way you will work on Windows 11 machine and VS code as the project is local, but via ssh you can run on pizero (debugging not possible).
 
 ## Environment
 * Windows 10 or Windows 11 with WSL2 installed and running
