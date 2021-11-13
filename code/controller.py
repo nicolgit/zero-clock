@@ -12,6 +12,6 @@ class ClockController(object):
         self.view.show_time(time)
     
     def sleep(self):
-        time.sleep(1)
+        time.sleep(10)
 
         
