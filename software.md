@@ -47,3 +47,12 @@ sudo python3 raspi-blinka.py
 # test display
 
 https://learn.adafruit.com/2-13-in-e-ink-bonnet/usage
+
+# autorun clock on startup
+On your Pi, edit the file /etc/rc.local using the editor of your choice. You must edit it with root permissions:
+
+sudo nano /etc/rc.local
+
+then add the following before 'exit 0'
+
+sudo python /home/pi/projects/zero-clock/code/zeroclock.py &
