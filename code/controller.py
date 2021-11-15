@@ -8,10 +8,15 @@ class ClockController(object):
 
     def show_time(self):
         time = self.model.get_time()
+        date = self.model.get_date()
 
-        self.view.show_time(time)
-    
+        self.view.prepare_image()
+        self.view.show_centered_string("monday", self.view.font_medium, 14)
+        self.view.show_centered_string(time, self.view.font_huge)
+        self.view.show_centered_string(date, self.view.font_medium,90)
+        self.view.show_image()
+
     def sleep(self):
-        time.sleep(10)
+        time.sleep(50)
 
         

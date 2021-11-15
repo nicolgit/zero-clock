@@ -22,6 +22,7 @@ class ClockView(object):
         BLACK = (0x00, 0x00, 0x00)
         
         self.BORDER = 10
+        self.FONTSIZE_MEDIUM = 24
         self.FONTSIZE_BIG = 32
         self.FONTSIZE_HUGE = 64
         self.BACKGROUND_COLOR = WHITE
@@ -37,8 +38,9 @@ class ClockView(object):
         self.rst = digitalio.DigitalInOut(board.D27)
         self.busy = digitalio.DigitalInOut(board.D17)
 
-        self.font_big = ImageFont.truetype("/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf", self.FONTSIZE_BIG)
-        self.font_huge = ImageFont.truetype("/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf", self.FONTSIZE_HUGE)
+        self.font_medium = ImageFont.truetype("/usr/share/fonts/truetype/dejavu/DejaVuSansCondensed-Bold.ttf", self.FONTSIZE_MEDIUM)
+        self.font_big = ImageFont.truetype("/usr/share/fonts/truetype/dejavu/DejaVuSansCondensed-Bold.ttf", self.FONTSIZE_BIG)
+        self.font_huge = ImageFont.truetype("/usr/share/fonts/truetype/dejavu/DejaVuSansCondensed-Bold.ttf", self.FONTSIZE_HUGE)
 
         self.display = Adafruit_SSD1675(122, 250, 
             self.spi,
@@ -50,15 +52,44 @@ class ClockView(object):
         )
 
         self.display.rotation = 1
-        self.display.fill(Adafruit_EPD.WHITE)
+        #self.display.fill(Adafruit_EPD.WHITE)
+        #self.display.display()
+
+        self.image = None
+
+    def prepare_image(self):
+        self.image = Image.new("RGB", (self.display.width, self.display.height))
+
+        draw = ImageDraw.Draw(self.image)
+        draw.rectangle((0, 0, self.display.width - 1, self.display.height - 1), fill=self.BACKGROUND_COLOR)
+    
+    def show_image(self):
+        self.display.image(self.image)
         self.display.display()
 
+    def show_centered_string(self, text, font, y = None):
+        (font_width, font_height) = font.getsize(text)
+
+        img_width = font_width
+        img_height = font_height
+        img_x = (self.display.width-img_width)/2
+        img_y = y or (self.display.height-img_height)/2
+
+        draw = ImageDraw.Draw(self.image)
+        #draw.rectangle((0, 0, self.display.width - 1, self.display.height - 1), fill=self.BACKGROUND_COLOR)
+        
+        draw.text(
+            (img_x, img_y),
+            text,
+            font=font,
+            fill=self.FOREGROUND_COLOR,
+        )
 
     def show_time(self, time):        
         print("its " + time + "!")
         text = time
 
-        (font_width, font_height) = self.font_big.getsize(text)
+        (font_width, font_height) = self.font_huge.getsize(text)
 
         img_width = font_width
         img_height = font_height
@@ -73,7 +104,7 @@ class ClockView(object):
         draw.text(
             (img_x, img_y),
             text,
-            font=self.font_big,
+            font=self.font_huge,
             fill=self.FOREGROUND_COLOR,
         )
 
