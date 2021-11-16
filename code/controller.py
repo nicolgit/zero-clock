@@ -11,7 +11,7 @@ class ClockController(object):
         date = self.model.get_date()
 
         self.view.prepare_image()
-        self.view.show_centered_string("monday", self.view.font_medium, 14)
+        self.view.show_centered_string(self.model.get_weekday(), self.view.font_medium, 14)
         self.view.show_centered_string(time, self.view.font_huge)
         self.view.show_centered_string(date, self.view.font_medium,90)
         self.view.show_image()
