@@ -1,8 +1,8 @@
 from view.baseview import BaseView
 
-import digitalio
 import busio
 import board
+import digitalio
 
 from PIL import Image, ImageDraw, ImageFont
 

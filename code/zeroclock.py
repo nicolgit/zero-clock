@@ -1,17 +1,16 @@
 
 from model import ClockModel
-from view import ClockView
-from controller import ClockController
-
-print("Hello World, I am a clock!")
-
 model = ClockModel()
-view = ClockView()
-controller = ClockController(model, view)
+
+from view.einkview import EinkView
+view = EinkView()
+
+#from view.consoleview import ConsoleView
+#view = ConsoleView()
 
 view.show_welcome()
-while True:
-    
-    controller.show_time()
-    controller.sleep()
 
+from controller import ClockController
+controller = ClockController(model, view)
+
+controller.loop()
