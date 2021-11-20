@@ -44,6 +44,10 @@ wget https://raw.githubusercontent.com/adafruit/Raspberry-Pi-Installer-Scripts/m
 sudo python3 raspi-blinka.py
 
 
+# requirered for web server
+
+pip3 install Flask
+
 # test display
 
 https://learn.adafruit.com/2-13-in-e-ink-bonnet/usage
