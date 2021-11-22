@@ -46,7 +46,7 @@ sudo python3 raspi-blinka.py
 
 # requirered for web server
 
-pip3 install Flask
+pip3 install Flas
 
 # test display
 

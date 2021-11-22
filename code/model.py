@@ -1,4 +1,5 @@
 import time
+import socket
 
 class ClockModel(object):
         
@@ -21,3 +22,9 @@ class ClockModel(object):
     def get_date(self):
         t = time.localtime()
         return time.strftime("%d %b %Y", t)
+    
+    def get_webserver_url(self):
+        return "http://" + socket.getfqdn() + ":" + str(self.get_webserver_port()) +  "/"
+    
+    def get_webserver_port(self):
+        return 5000

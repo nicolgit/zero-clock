@@ -39,6 +39,7 @@ class ClockController(object):
     def show_setting(self):
         self.view.prepare_image()
         self.view.show_centered_string("settings", self.view.font_medium, 14)
+        self.view.show_centered_string(self.model.get_webserver_url(), self.view.font_medium, 32)
         self.view.show_image()
 
     def sleep(self):
