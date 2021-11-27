@@ -55,14 +55,14 @@ https://learn.adafruit.com/2-13-in-e-ink-bonnet/usage
 # autorun clock on startup 
 On your Pi, type 
 
-'''
+```bash
 crontab -e 
-'''
+```
 
 and add the following row:
 
-'''
+```bash
 @reboot /bin/sleep 30; /usr/bin/python3 /home/pi/projects/zero-clock/code/zeroclock.py
-'''
+```
 
 this means execute 30 seconds after the boot, the zeroclock app. The pause is needed to be sure that all services required by the app are properly started.
