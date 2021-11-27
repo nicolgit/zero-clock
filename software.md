@@ -52,11 +52,17 @@ pip3 install Flas
 
 https://learn.adafruit.com/2-13-in-e-ink-bonnet/usage
 
-# autorun clock on startup
-On your Pi, edit the file /etc/rc.local using the editor of your choice. You must edit it with root permissions:
+# autorun clock on startup 
+On your Pi, type 
 
-sudo nano /etc/rc.local
+'''
+crontab -e 
+'''
 
-then add the following before 'exit 0'
+and add the following row:
 
-sudo python /home/pi/projects/zero-clock/code/zeroclock.py &
+'''
+@reboot /bin/sleep 30; /usr/bin/python3 /home/pi/projects/zero-clock/code/zeroclock.py
+'''
+
+this means execute 30 seconds after the boot, the zeroclock app. The pause is needed to be sure that all services required by the app are properly started.

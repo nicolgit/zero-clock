@@ -10,6 +10,11 @@ Open WSL either by launching the Windows Terminal and creating a new WSL tab or 
 
 ```bash
 sudo mkdir /mnt/pizero
+```
+
+and after 
+
+```bash
 sudo sshfs -o allow_other,default_permissions pi@pizero:/home/pi/projects/ /mnt/pizero
 ```
 
