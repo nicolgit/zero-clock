@@ -29,6 +29,8 @@ class ClockController(object):
         self.view.show_centered_string(self.model.get_weekday(), self.view.font_medium, 14)
         self.view.show_centered_string(time, self.view.font_huge)
         self.view.show_centered_string(date, self.view.font_medium,90)
+
+        self.view.show_qrcode(self.model.get_webserver_url(), 1, 1)
         self.view.show_image()
     
     def show_weather(self):
@@ -47,8 +49,9 @@ class ClockController(object):
         i=  0
 
         while (i<DURATION):
-            time.sleep(1)
-            i += 1
+            delta = 0.1
+            time.sleep(delta)
+            i += delta
 
             if not self.up_button.value:
                 if(self.CurrentPage == Pages.Time): 

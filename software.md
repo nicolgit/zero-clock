@@ -44,9 +44,11 @@ wget https://raw.githubusercontent.com/adafruit/Raspberry-Pi-Installer-Scripts/m
 sudo python3 raspi-blinka.py
 
 
-# requirered for web server
+# requirered for web server and QRCode generation
 
-pip3 install Flas
+pip3 install Flask
+pip3 install pyqrcode
+pip3 install pypng
 
 # test display
 

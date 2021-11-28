@@ -3,7 +3,10 @@ from view.baseview import BaseView
 import busio
 import board
 import digitalio
+import pyqrcode
+import png
 
+from pyqrcode import QRCode
 from PIL import Image, ImageDraw, ImageFont
 
 from adafruit_epd.il0373 import Adafruit_IL0373
@@ -23,6 +26,7 @@ class EinkView(BaseView):
         WHITE = (0xFF, 0xFF, 0xFF)
         BLACK = (0x00, 0x00, 0x00)
         
+        self.QRCODE_FILENAME = "/run/shm/qr.png"
         self.BORDER = 10
         self.FONTSIZE_MEDIUM = 24
         self.FONTSIZE_BIG = 32
@@ -30,7 +34,6 @@ class EinkView(BaseView):
         self.BACKGROUND_COLOR = WHITE
         self.FOREGROUND_COLOR = BLACK
         self.TEXT_COLOR = BLACK
-
 
         # create the spi device and pins we will need
         self.spi = busio.SPI(board.SCK, MOSI=board.MOSI, MISO=board.MISO)
@@ -68,6 +71,16 @@ class EinkView(BaseView):
         draw = ImageDraw.Draw(self.image)
         draw.rectangle((0, 0, self.display.width - 1, self.display.height - 1), fill=self.BACKGROUND_COLOR)
     
+    def show_qrcode(self, urlstring, x, y):
+        url = pyqrcode.create(urlstring)
+        print(url.get_png_size(1))
+
+        url.png(self.QRCODE_FILENAME, scale = 1)
+        imageFile = Image.open(self.QRCODE_FILENAME)
+        
+        
+        self.image.paste(imageFile, (x, y))
+        
     def show_image(self):
         self.display.image(self.image)
         self.display.display()
