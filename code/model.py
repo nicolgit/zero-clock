@@ -1,4 +1,5 @@
 import json
+import os
 import datetime
 import time
 import socket
@@ -7,7 +8,9 @@ import requests
 class ClockModel(object):
 
     def __init__(self):
-        with open("config.json", "r") as jsonfile:
+
+        __location__ = os.path.realpath( os.path.join(os.getcwd(), os.path.dirname(__file__)))
+        with open(os.path.join(__location__, "config.json"), "r") as jsonfile:
             CONFIG = json.load(jsonfile)
         jsonfile.close()
 
