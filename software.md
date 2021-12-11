@@ -49,6 +49,7 @@ sudo python3 raspi-blinka.py
 pip3 install Flask
 pip3 install pyqrcode
 pip3 install pypng
+pip3 install requests
 
 # test display
 

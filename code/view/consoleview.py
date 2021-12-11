@@ -16,5 +16,8 @@ class ConsoleView(BaseView):
     def show_centered_string(self, text, font, y = None):
         print(text)     
     
+    def show_qrcode(self, urlstring, x, y):
+        print("QRCODE")
+        
     def show_welcome(self):
         print("hello!")

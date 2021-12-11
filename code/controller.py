@@ -35,7 +35,9 @@ class ClockController(object):
     
     def show_weather(self):
         self.view.prepare_image()
-        self.view.show_centered_string("weather", self.view.font_medium, 14)
+        self.view.show_centered_string(self.model.get_weather_place(), self.view.font_medium, 14)
+        self.view.show_centered_string(self.model.get_weather_temperature(), self.view.font_huge)
+        self.view.show_centered_string(self.model.get_weather_description(), self.view.font_medium,90)
         self.view.show_image()
 
     def show_setting(self):
@@ -68,11 +70,14 @@ class ClockController(object):
                     return
                 self.CurrentPage = Pages.Settings
                 return
+            
 
             
 
     def loop(self):
         while True:
+            self.model.update_weather_info()
+
             if (self.CurrentPage == Pages.Time): self.show_time()
             if (self.CurrentPage == Pages.Weather): self.show_weather()
             if (self.CurrentPage == Pages.Settings): self.show_setting()
