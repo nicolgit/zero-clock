@@ -33,7 +33,7 @@ sudo apt-get install ttf-dejavu
 sudo apt-get install python3-pil
 
 
-
+sudo apt install python3-gpiozero
 
 # forse questo non serve, riprovare setup dall'inizio...
 # install BLINKA
