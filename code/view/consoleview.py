@@ -13,7 +13,7 @@ class ConsoleView(BaseView):
     def show_image(self): 
         print("")
 
-    def show_centered_string(self, text, font, y = None):
+    def show_centered_string(self, text, font, x= None, y = None, lx=None):
         print(text)     
     
     def show_qrcode(self, urlstring, x, y):

@@ -26,24 +26,27 @@ class ClockController(object):
         date = self.model.get_date()
 
         self.view.prepare_image()
-        self.view.show_centered_string(self.model.get_weekday(), self.view.font_medium, 14)
-        self.view.show_centered_string(time, self.view.font_huge)
-        self.view.show_centered_string(date, self.view.font_medium,90)
+        self.view.show_centered_string(self.model.get_weekday(), self.view.font_medium, 0, 14, 180)
+        self.view.show_centered_string(time, self.view.font_big, 0, 28, 180)
+        self.view.show_centered_string(date, self.view.font_medium, 0, 60, 180)
 
-        self.view.show_qrcode(self.model.get_webserver_url(), 1, 1)
+        self.view.show_centered_string("T" + self.model.get_weather_temperature(), self.view.font_medium, 180, 0, 50)
+        self.view.show_centered_string("H" + self.model.get_weather_humidity(), self.view.font_medium, 180, 10, 50)
+        self.view.show_rectangle(0,0,50,100)
         self.view.show_image()
     
     def show_weather(self):
         self.view.prepare_image()
-        self.view.show_centered_string(self.model.get_weather_place(), self.view.font_medium, 14)
+        self.view.show_centered_string(self.model.get_weather_place(), self.view.font_medium, 0, 14)
         self.view.show_centered_string(self.model.get_weather_temperature(), self.view.font_huge)
-        self.view.show_centered_string(self.model.get_weather_description(), self.view.font_medium,90)
+        self.view.show_centered_string(self.model.get_weather_description(), self.view.font_medium, 0, 90)
         self.view.show_image()
 
     def show_setting(self):
         self.view.prepare_image()
-        self.view.show_centered_string("settings", self.view.font_medium, 14)
-        self.view.show_centered_string(self.model.get_webserver_url(), self.view.font_medium, 32)
+        self.view.show_qrcode(self.model.get_webserver_url(), 1, 1)
+        self.view.show_centered_string("settings", self.view.font_medium, 0, 14)
+        self.view.show_centered_string(self.model.get_webserver_url(), self.view.font_medium, 0, 32)
         self.view.show_image()
 
     def sleep(self):

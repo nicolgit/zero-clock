@@ -59,6 +59,9 @@ class ClockModel(object):
     def get_weather_temperature(self):
         return str(int(self.current_weather.get("main").get("temp") - 273.15)) + "°C"
     
+    def get_weather_humidity(self):
+        return str(int(self.current_weather.get("main").get("humidity") )) + "%"
+    
     def update_weather_info(self):
         c = datetime.datetime.now() - self.current_weather_time
         minutes = c.total_seconds() / 60
