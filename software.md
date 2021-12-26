@@ -46,7 +46,7 @@ Install GIT
 sudo apt install git
 ```
 
-Install python libraries for adafruit, fonts, qrcode management etc.
+Install python libraries for adafruit, fonts, qrcode management, web server etc.
 
 ```
 sudo pip3 install --upgrade setuptools
@@ -55,6 +55,11 @@ sudo pip3 install adafruit-circuitpython-epd
 sudo apt-get install ttf-dejavu
 sudo apt-get install python3-pil
 sudo apt install python3-gpiozero
+
+pip3 install Flask 
+pip3 install pyqrcode 
+pip3 install pypng 
+pip3 install requests
 ```
 
 # Install zero-clock 
@@ -65,7 +70,20 @@ Run the followwing to install zero-clock
 mkdir projects
 cd projects/
 git clone https://github.com/nicolgit/zero-clock/
+cd zero-clock/code/
+cp config.SAMPLE.json config.json
 ```
+
+update config file with a valid Open Weather API Key (https://openweathermap.org/api) and a City name to use for weahter forecasts
+
+```
+nano config.json
+```
+
+test the application using the command `python zeroclock.py`
+
+
+
 
 ----
 
