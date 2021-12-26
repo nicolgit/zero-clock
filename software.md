@@ -1,3 +1,28 @@
+# Setup Raspberry PI OS
+
+Here's the quick-start for people with some experience:
+
+* Download raspberry PI imager from https://www.raspberrypi.com/software/
+* put an empty 16Gb microSD in your PC SD port
+* start the Raspberry imager and select:
+  * OS: Raspberry Pi OS Lite (32 bit)
+  * Storage: your SD HC card
+  * type CTRL + SHIFT + X (Advanced options)
+    * Set Hostname
+    * Enable SSH
+    * Set password for pi user
+    * configure WiFi (SSD and Password)
+    * SAVE
+  * WRITE
+* Put the sd card in your raspberry and boot
+
+# Install pre-requisites
+
+# Install zero-clock 
+
+
+----
+
 fix links from https://learn.adafruit.com/circuitpython-on-raspberrypi-linux/installing-circuitpython-on-raspberry-pi
 
 ----
