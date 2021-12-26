@@ -40,6 +40,12 @@ sudo apt-get upgrade
 sudo apt-get install python3-pip
 ```
 
+Install GIT
+
+```
+sudo apt install git
+
+```
 
 # Install zero-clock 
 
