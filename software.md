@@ -51,8 +51,6 @@ Install python libraries for adafruit, fonts, qrcode management, web server etc.
 ```
 sudo pip3 install --upgrade setuptools
 sudo pip3 install adafruit-circuitpython-epd
-
-sudo apt-get install ttf-dejavu
 sudo apt-get install python3-pil
 sudo apt install python3-gpiozero
 
@@ -62,8 +60,12 @@ pip3 install pypng
 pip3 install requests
 ```
 
+Enable SPI
+
+In order to enable SPI, execute `sudo raspi-config`, go to (3) `interface options` (I4) `Enable SPI`
+
 # Install zero-clock 
-Run the followwing to install zero-clock
+Run the followwing to install zero-clock 
 
 
 ```
