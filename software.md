@@ -44,11 +44,28 @@ Install GIT
 
 ```
 sudo apt install git
+```
 
+Install python libraries for adafruit, fonts, qrcode management etc.
+
+```
+sudo pip3 install --upgrade setuptools
+sudo pip3 install adafruit-circuitpython-epd
+
+sudo apt-get install ttf-dejavu
+sudo apt-get install python3-pil
+sudo apt install python3-gpiozero
 ```
 
 # Install zero-clock 
+Run the followwing to install zero-clock
 
+
+```
+mkdir projects
+cd projects/
+git clone https://github.com/nicolgit/zero-clock/
+```
 
 ----
 
