@@ -31,11 +31,15 @@ network={
 }
 ```
 
-
-
-
-
 # Install pre-requisites
+Install and upgrade Python 3
+
+```
+sudo apt-get update 
+sudo apt-get upgrade 
+sudo apt-get install python3-pip
+```
+
 
 # Install zero-clock 
 
