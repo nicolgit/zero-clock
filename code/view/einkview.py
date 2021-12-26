@@ -43,9 +43,9 @@ class EinkView(BaseView):
         self.rst = digitalio.DigitalInOut(board.D27)
         self.busy = digitalio.DigitalInOut(board.D17)
 
-        self.font_medium = ImageFont.truetype("/usr/share/fonts/truetype/dejavu/DejaVuSansCondensed-Bold.ttf", self.FONTSIZE_MEDIUM)
-        self.font_big = ImageFont.truetype("/usr/share/fonts/truetype/dejavu/DejaVuSansCondensed-Bold.ttf", self.FONTSIZE_BIG)
-        self.font_huge = ImageFont.truetype("/usr/share/fonts/truetype/dejavu/DejaVuSansCondensed-Bold.ttf", self.FONTSIZE_HUGE)
+        self.font_medium = ImageFont.truetype("/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf", self.FONTSIZE_MEDIUM)
+        self.font_big = ImageFont.truetype("/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf", self.FONTSIZE_BIG)
+        self.font_huge = ImageFont.truetype("/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf", self.FONTSIZE_HUGE)
 
         self.display = Adafruit_SSD1675(122, 250, 
             self.spi,
