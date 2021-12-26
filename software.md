@@ -16,6 +16,25 @@ Here's the quick-start for people with some experience:
   * WRITE
 * Put the sd card in your raspberry and boot
 
+once you access to raspberry add all the additional WiFi network if needed (this is required if you think to use this clock in different places/houses. Use the following command:
+
+```
+sudo nano /etc/wpa_supplicant/wpa_supplicant.conf
+```
+
+where for each WiFi network you can add the following
+
+```
+network={
+        ssid="my-wifi-ssid"
+        psk="my-wifi-password"
+}
+```
+
+
+
+
+
 # Install pre-requisites
 
 # Install zero-clock 
