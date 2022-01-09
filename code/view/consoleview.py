@@ -3,6 +3,7 @@ from view.baseview import BaseView
 class ConsoleView(BaseView):
 
     def __init__(self):
+        self.font_small = None
         self.font_medium = None
         self.font_big = None
         self.font_huge = None

@@ -22,19 +22,21 @@ class ClockController(object):
         self.CurrentPage = Pages.Time
 
     def show_time(self):
-        time = self.model.get_time()
-        date = self.model.get_date()
 
         self.view.prepare_image()
-        self.view.show_centered_string(self.model.get_weekday(), self.view.font_medium, 0, 14, 180)
-        self.view.show_centered_string(time, self.view.font_big, 0, 28, 180)
-        self.view.show_centered_string(date, self.view.font_medium, 0, 60, 180)
 
-        self.view.show_centered_string("T" + self.model.get_weather_temperature(), self.view.font_medium, 180, 0, 50)
-        self.view.show_centered_string("H" + self.model.get_weather_humidity(), self.view.font_medium, 180, 10, 50)
+        self.view.show_centered_string(self.model.get_weekday(), self.view.font_medium, 0, 0, 140)
+        self.view.show_centered_string(self.model.get_time(),    self.view.font_big,    0, 14, 140)
+        self.view.show_centered_string(self.model.get_date(),    self.view.font_medium, 0, 44, 140)
+
+        self.view.show_centered_string("----", self.view.font_medium, 180, 0, 50)
+        self.view.show_centered_string("T" + self.model.get_weather_temperature(), self.view.font_medium, 180, 18, 50)
+        self.view.show_centered_string("H" + self.model.get_weather_humidity(), self.view.font_medium, 180, 36, 50)
+        
         self.view.show_rectangle(0,0,50,100)
+        
         self.view.show_image()
-    
+
     def show_weather(self):
         self.view.prepare_image()
         self.view.show_centered_string(self.model.get_weather_place(), self.view.font_medium, 0, 14)

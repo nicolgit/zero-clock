@@ -28,6 +28,7 @@ class EinkView(BaseView):
         
         self.QRCODE_FILENAME = "/run/shm/qr.png"
         self.BORDER = 10
+        self.FONTSIZE_SMALL = 12
         self.FONTSIZE_MEDIUM = 18
         self.FONTSIZE_BIG = 32
         self.FONTSIZE_HUGE = 64
@@ -42,7 +43,8 @@ class EinkView(BaseView):
         self.srcs = None
         self.rst = digitalio.DigitalInOut(board.D27)
         self.busy = digitalio.DigitalInOut(board.D17)
-
+        
+        self.font_small = ImageFont.truetype("/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf", self.FONTSIZE_SMALL)
         self.font_medium = ImageFont.truetype("/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf", self.FONTSIZE_MEDIUM)
         self.font_big = ImageFont.truetype("/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf", self.FONTSIZE_BIG)
         self.font_huge = ImageFont.truetype("/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf", self.FONTSIZE_HUGE)
@@ -88,13 +90,20 @@ class EinkView(BaseView):
     def show_centered_string(self, text, font, x = 0, y = None, lx = None):
         (font_width, font_height) = font.getsize(text)
 
-        lx = lx or (self.display.width)
+        if lx is None:
+            lx = self.display.width
 
         img_width = font_width
         img_height = font_height
         img_x = x + (lx-img_width)/2
-        img_y = y or (self.display.height-img_height)/2
 
+        if y is None:
+            img_y =(self.display.height-img_height)/2
+        else:
+            img_y = y
+
+        print (str(img_x) + " " + str(img_y))
+        
         draw = ImageDraw.Draw(self.image)
         
         draw.text(
