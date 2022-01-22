@@ -14,8 +14,14 @@ class ConsoleView(BaseView):
     def show_image(self): 
         print("")
 
+    def refresh(self):  
+        print("refresh")
+    
+    def show_progress(self, x, y, lx, ly, current, max):
+        print("progress " + str (current) + "/" + str(max))
+
     def show_centered_string(self, text, font, x= None, y = None, lx=None):
-        print(text)     
+        print("CENTERED STRING: " + text)     
     
     def show_qrcode(self, urlstring, x, y):
         print("QRCODE")

@@ -22,6 +22,10 @@ class ClockModel(object):
         self.update_weather_info()
 
     def get_time(self):
+        t = datetime.datetime.now()
+        return t
+
+    def get_time_string(self):
         t = time.localtime()
         return time.strftime("%H:%M", t)
     
@@ -50,6 +54,31 @@ class ClockModel(object):
     def get_weather_place(self):
         return self.current_weather.get("name") + " " + self.current_weather.get("sys").get("country")
 
+    def get_sunrise(self):
+        d = datetime.datetime.fromtimestamp(self.current_weather.get("sys").get("sunrise"))
+        return d
+
+    def get_sunset(self):
+        d = datetime.datetime.fromtimestamp(self.current_weather.get("sys").get("sunset"))
+        return d
+        
+    def get_weather_temperature(self):
+        return str(self.current_weather.get("main").get("temp")) + "°C"
+
+    def get_weather_humidity(self):
+        return str(self.current_weather.get("main").get("humidity")) + "%"
+
+    def get_weather_description(self):
+        return self.current_weather.get("weather")[0].get("description")
+
+    def get_weather_icon(self):
+        return self.current_weather.get("weather")[0].get("icon")
+
+    def update_weather_info(self):
+        r = requests.get("http://api.openweathermap.org/data/2.5/weather?q=" + self.city + "&appid=" + self.weather_api_key)
+        self.current_weather = r.json()
+        self.current_weather_time = datetime.datetime.now()
+
     def get_weather_info(self):
         return self.current_weather.get("weather")[0].get("main")
 
@@ -66,8 +95,6 @@ class ClockModel(object):
         c = datetime.datetime.now() - self.current_weather_time
         minutes = c.total_seconds() / 60
 
-        print('Total difference in minutes: ', minutes) 
-
         if (minutes > 60):
             response = requests.get("http://api.openweathermap.org/data/2.5/weather?q=" + self.city + "&appid=" + self.weather_api_key)
 
@@ -75,8 +102,5 @@ class ClockModel(object):
 
             self.current_weather_time = datetime.datetime.now()
             self.current_weather = weatherjson
-
-            print (weatherjson.get("coord"))
-            print (weatherjson.get("main").get("temp"))
 
 

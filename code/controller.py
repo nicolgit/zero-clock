@@ -1,6 +1,7 @@
 import time
 import digitalio
 import board
+import datetime
 
 from enum import Enum
 class Pages(Enum):
@@ -26,16 +27,52 @@ class ClockController(object):
         self.view.prepare_image()
 
         self.view.show_centered_string(self.model.get_weekday(), self.view.font_medium, 0, 0, 140)
-        self.view.show_centered_string(self.model.get_time(),    self.view.font_big,    0, 14, 140)
-        self.view.show_centered_string(self.model.get_date(),    self.view.font_medium, 0, 44, 140)
+        self.view.show_centered_string(self.model.get_time_string(),    self.view.font_huge,    0, 22, 140)
+        self.view.show_centered_string(self.model.get_date(),    self.view.font_medium, 0, 80, 140)
 
-        self.view.show_centered_string("----", self.view.font_medium, 180, 0, 50)
-        self.view.show_centered_string("T" + self.model.get_weather_temperature(), self.view.font_medium, 180, 18, 50)
-        self.view.show_centered_string("H" + self.model.get_weather_humidity(), self.view.font_medium, 180, 36, 50)
         
-        self.view.show_rectangle(0,0,50,100)
+        self.view.show_centered_string(self.model.get_weather_temperature(), self.view.font_medium, 180, 50, 50)
+        self.view.show_centered_string(self.model.get_weather_humidity(), self.view.font_medium, 180, 72, 50)
+           
         
+
+
+        sr = self.model.get_sunrise()
+        ss = self.model.get_sunset()
+        t = self.model.get_time()
+
+        print ("currenttime " + t.strftime("%m/%d/%Y, %H:%M:%S"))
+        print ("sunrise " +  sr.strftime("%m/%d/%Y, %H:%M:%S"))
+        print ("sunset " + ss.strftime("%m/%d/%Y, %H:%M:%S"))
+
+        remaining = ""
+        progress    = 0
+        progressmax = 1000
+
+        if (t > sr and t < ss):
+            progress = (t-sr).total_seconds()
+            progressmax = (ss-sr).total_seconds()
+            hours, minutes, seconds = self.convert_timedelta (ss - t)
+            remaining =  "{}h{}m".format(hours, minutes)
+
+        if (t > ss):
+            progress = (t-ss).total_seconds()
+            progressmax = ((sr + datetime.timedelta(days=1)) - ss).total_seconds()
+            hours, minutes, seconds = self.convert_timedelta ((sr + datetime.timedelta(days=1)) - t)
+            remaining =  "{}h{}m".format(hours, minutes)
+            
+        if (t<sr):
+            progress = (t - (ss-datetime.timedelta(days=1))).total_seconds()
+            progressmax = (sr - (ss - datetime.timedelta(days=1))).total_seconds()
+            hours, minutes, seconds = self.convert_timedelta (sr - t)
+            remaining =  "{}h{}m".format(hours, minutes)
+
+        self.view.show_centered_string(remaining, self.view.font_medium, 180, 94, 50) 
+
         self.view.show_image()
+        self.view.show_fill_rect(180,4,1,96)
+        self.view.show_progress( 0, 104, 180, 10,  progress, progressmax)
+        self.view.refresh()
 
     def show_weather(self):
         self.view.prepare_image()
@@ -88,5 +125,12 @@ class ClockController(object):
             if (self.CurrentPage == Pages.Settings): self.show_setting()
 
             self.sleep()
+    
+    def convert_timedelta(self, duration):
+        days, seconds = duration.days, duration.seconds
+        hours = days * 24 + seconds // 3600
+        minutes = (seconds % 3600) // 60
+        seconds = (seconds % 60)
+        return hours, minutes, seconds
 
         

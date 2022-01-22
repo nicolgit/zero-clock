@@ -31,7 +31,7 @@ class EinkView(BaseView):
         self.FONTSIZE_SMALL = 12
         self.FONTSIZE_MEDIUM = 18
         self.FONTSIZE_BIG = 32
-        self.FONTSIZE_HUGE = 64
+        self.FONTSIZE_HUGE = 48
         self.BACKGROUND_COLOR = WHITE
         self.FOREGROUND_COLOR = BLACK
         self.TEXT_COLOR = BLACK
@@ -76,15 +76,14 @@ class EinkView(BaseView):
     def show_qrcode(self, urlstring, x, y):
         url = pyqrcode.create(urlstring)
         print(url.get_png_size(1))
-
         url.png(self.QRCODE_FILENAME, scale = 1)
-        imageFile = Image.open(self.QRCODE_FILENAME)
-        
-        
+        imageFile = Image.open(self.QRCODE_FILENAME)   
         self.image.paste(imageFile, (x, y))
         
     def show_image(self):
         self.display.image(self.image)
+
+    def refresh(self):  
         self.display.display()
 
     def show_centered_string(self, text, font, x = 0, y = None, lx = None):
@@ -101,8 +100,6 @@ class EinkView(BaseView):
             img_y =(self.display.height-img_height)/2
         else:
             img_y = y
-
-        print (str(img_x) + " " + str(img_y))
         
         draw = ImageDraw.Draw(self.image)
         
@@ -113,10 +110,14 @@ class EinkView(BaseView):
             fill=self.FOREGROUND_COLOR,
         )
 
-    def show_rectangle(self, x, y, lx, ly):
-        a = 0
-        #draw = ImageDraw.Draw(self.image)
-        #draw.fill_rect(x, y, lx, ly, Adafruit_EPD.BLACK)
+    def show_fill_rect(self, x, y, lx, ly):
+        self.display.fill_rect(x, y, lx, ly, Adafruit_EPD.BLACK)
+
+    def show_progress(self, x, y, lx, ly, current, max):
+        self.display.rect(x, y, lx, ly, Adafruit_EPD.BLACK)
+        
+        reallx = int(lx * current // max) 
+        self.display.fill_rect(x, y, reallx, ly, Adafruit_EPD.BLACK)
 
     def show_welcome(self):
         text = "Hello!"
