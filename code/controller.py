@@ -23,55 +23,57 @@ class ClockController(object):
         self.CurrentPage = Pages.Time
 
     def show_time(self):
-
         self.view.prepare_image()
 
-        self.view.show_centered_string(self.model.get_weekday(), self.view.font_medium, 0, 0, 140)
-        self.view.show_centered_string(self.model.get_time_string(),    self.view.font_huge,    0, 22, 140)
-        self.view.show_centered_string(self.model.get_date(),    self.view.font_medium, 0, 80, 140)
+        screen_width   = 250
+        screen_height  = 122 
 
+        vlineat = 180
         
-        self.view.show_centered_string(self.model.get_weather_temperature(), self.view.font_medium, 180, 50, 50)
-        self.view.show_centered_string(self.model.get_weather_humidity(), self.view.font_medium, 180, 72, 50)
+        self.view.show_centered_string(self.model.get_weekday(), self.view.font_medium,      0, 0,  vlineat)
+        self.view.show_centered_string(self.model.get_time_string(),    self.view.font_huge, 0, 20, vlineat)
+        self.view.show_centered_string(self.model.get_date(),    self.view.font_medium,      0, 76, vlineat)
            
-        
-
-
-        sr = self.model.get_sunrise()
-        ss = self.model.get_sunset()
-        t = self.model.get_time()
-
-        print ("currenttime " + t.strftime("%m/%d/%Y, %H:%M:%S"))
-        print ("sunrise " +  sr.strftime("%m/%d/%Y, %H:%M:%S"))
-        print ("sunset " + ss.strftime("%m/%d/%Y, %H:%M:%S"))
+        sr = self.model.get_sunrise() # sunrise time
+        ss = self.model.get_sunset()  # sunset time
+        t = self.model.get_time()     # current time
 
         remaining = ""
         progress    = 0
         progressmax = 1000
+        ss_icon = "A"
 
         if (t > sr and t < ss):
             progress = (t-sr).total_seconds()
             progressmax = (ss-sr).total_seconds()
             hours, minutes, seconds = self.convert_timedelta (ss - t)
-            remaining =  "{}h{}m".format(hours, minutes)
+            remaining =  "{}h{}".format(hours, minutes)
+            ss_icon = "2"
 
         if (t > ss):
             progress = (t-ss).total_seconds()
             progressmax = ((sr + datetime.timedelta(days=1)) - ss).total_seconds()
             hours, minutes, seconds = self.convert_timedelta ((sr + datetime.timedelta(days=1)) - t)
-            remaining =  "{}h{}m".format(hours, minutes)
+            remaining =  "{}h{}".format(hours, minutes)
+            ss_icon = "1"
             
         if (t<sr):
             progress = (t - (ss-datetime.timedelta(days=1))).total_seconds()
             progressmax = (sr - (ss - datetime.timedelta(days=1))).total_seconds()
             hours, minutes, seconds = self.convert_timedelta (sr - t)
-            remaining =  "{}h{}m".format(hours, minutes)
+            remaining =  "{}h{}".format(hours, minutes)
+            ss_icon = "1"
 
-        self.view.show_centered_string(remaining, self.view.font_medium, 180, 94, 50) 
+        self.view.show_centered_string(self.model.get_weather_temperature(), self.view.font_medium, vlineat, 50, 70)
+        self.view.show_centered_string(self.model.get_weather_humidity(), self.view.font_medium,    vlineat, 74, 70)
+        self.view.show_centered_string(remaining, self.view.font_medium,                            vlineat+8, 98, 70) 
+        self.view.draw_small_icon(ss_icon, vlineat, 98)
 
-        self.view.show_image()
-        self.view.show_fill_rect(180,4,1,96)
-        self.view.show_progress( 0, 104, 180, 10,  progress, progressmax)
+        self.view.draw_line(vlineat, 4, vlineat, 104)
+
+        self.view.draw_weather_icon(self.model.get_weather_icon(), vlineat + 10, 2)
+        self.view.draw_progress( 0, 106, vlineat, 10,  progress, progressmax)
+        
         self.view.refresh()
 
     def show_weather(self):
@@ -79,14 +81,14 @@ class ClockController(object):
         self.view.show_centered_string(self.model.get_weather_place(), self.view.font_medium, 0, 14)
         self.view.show_centered_string(self.model.get_weather_temperature(), self.view.font_huge)
         self.view.show_centered_string(self.model.get_weather_description(), self.view.font_medium, 0, 90)
-        self.view.show_image()
+        self.view.refresh()
 
     def show_setting(self):
         self.view.prepare_image()
         self.view.show_qrcode(self.model.get_webserver_url(), 1, 1)
         self.view.show_centered_string("settings", self.view.font_medium, 0, 14)
         self.view.show_centered_string(self.model.get_webserver_url(), self.view.font_medium, 0, 32)
-        self.view.show_image()
+        self.view.refresh()
 
     def sleep(self):
         DURATION = 50

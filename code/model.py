@@ -54,6 +54,10 @@ class ClockModel(object):
     def get_weather_place(self):
         return self.current_weather.get("name") + " " + self.current_weather.get("sys").get("country")
 
+    def get_weather_icon(self):
+        return self.current_weather.get("weather")[0].get("icon")
+
+
     def get_sunrise(self):
         d = datetime.datetime.fromtimestamp(self.current_weather.get("sys").get("sunrise"))
         return d

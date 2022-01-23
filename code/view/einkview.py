@@ -19,7 +19,6 @@ from adafruit_epd.ssd1681 import Adafruit_SSD1681  # pylint: disable=unused-impo
 
 from adafruit_epd.epd import Adafruit_EPD
 
-
 class EinkView(BaseView):
     def __init__(self):
         # UI Constants
@@ -29,12 +28,33 @@ class EinkView(BaseView):
         self.QRCODE_FILENAME = "/run/shm/qr.png"
         self.BORDER = 10
         self.FONTSIZE_SMALL = 12
-        self.FONTSIZE_MEDIUM = 18
+        self.FONTSIZE_MEDIUM = 20
         self.FONTSIZE_BIG = 32
-        self.FONTSIZE_HUGE = 48
+        self.FONTSIZE_HUGE = 52
         self.BACKGROUND_COLOR = WHITE
         self.FOREGROUND_COLOR = BLACK
         self.TEXT_COLOR = BLACK
+
+        self.ICON_MAP = {
+            "01d": "B",
+            "01n": "C",
+            "02d": "H",
+            "02n": "I",
+            "03d": "N",
+            "03n": "N",
+            "04d": "Y",
+            "04n": "Y",
+            "09d": "Q",
+            "09n": "Q",
+            "10d": "R",
+            "10n": "R",
+            "11d": "Z",
+            "11n": "Z",
+            "13d": "W",
+            "13n": "W",
+            "50d": "J",
+            "50n": "K",
+        }
 
         # create the spi device and pins we will need
         self.spi = busio.SPI(board.SCK, MOSI=board.MOSI, MISO=board.MISO)
@@ -44,10 +64,14 @@ class EinkView(BaseView):
         self.rst = digitalio.DigitalInOut(board.D27)
         self.busy = digitalio.DigitalInOut(board.D17)
         
-        self.font_small = ImageFont.truetype("/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf", self.FONTSIZE_SMALL)
-        self.font_medium = ImageFont.truetype("/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf", self.FONTSIZE_MEDIUM)
-        self.font_big = ImageFont.truetype("/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf", self.FONTSIZE_BIG)
-        self.font_huge = ImageFont.truetype("/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf", self.FONTSIZE_HUGE)
+        self.FONT_PATH = "../fonts/DroidSans-Bold.ttf"
+        self.font_small = ImageFont.truetype (self.FONT_PATH, self.FONTSIZE_SMALL)
+        self.font_medium = ImageFont.truetype(self.FONT_PATH, self.FONTSIZE_MEDIUM)
+        self.font_big = ImageFont.truetype   (self.FONT_PATH, self.FONTSIZE_BIG)
+        self.font_huge = ImageFont.truetype  (self.FONT_PATH, self.FONTSIZE_HUGE)
+
+        self.font_icons= ImageFont.truetype("../fonts/meteocons.ttf", 46)
+        self.font_icons_small= ImageFont.truetype("../fonts/meteocons.ttf", 24)
 
         self.display = Adafruit_SSD1675(122, 250, 
             self.spi,
@@ -77,14 +101,30 @@ class EinkView(BaseView):
         url = pyqrcode.create(urlstring)
         print(url.get_png_size(1))
         url.png(self.QRCODE_FILENAME, scale = 1)
-        imageFile = Image.open(self.QRCODE_FILENAME)   
+        imageFile = Image.open(self.QRCODE_FILENAME) 
         self.image.paste(imageFile, (x, y))
-        
-    def show_image(self):
-        self.display.image(self.image)
 
     def refresh(self):  
+        self.display.image(self.image)
         self.display.display()
+
+    def draw_weather_icon(self, code, x, y):
+        draw = ImageDraw.Draw(self.image)
+        draw.text(
+            (x, y),
+            self.ICON_MAP[code],
+            font=self.font_icons,
+            fill=self.FOREGROUND_COLOR,
+        )
+
+    def draw_small_icon(self, text, x, y):
+        draw = ImageDraw.Draw(self.image)
+        draw.text(
+            (x, y),
+            text,
+            font=self.font_icons_small,
+            fill=self.FOREGROUND_COLOR,
+        )
 
     def show_centered_string(self, text, font, x = 0, y = None, lx = None):
         (font_width, font_height) = font.getsize(text)
@@ -110,14 +150,24 @@ class EinkView(BaseView):
             fill=self.FOREGROUND_COLOR,
         )
 
-    def show_fill_rect(self, x, y, lx, ly):
-        self.display.fill_rect(x, y, lx, ly, Adafruit_EPD.BLACK)
+    def draw_line(self, x1, y1, x2, y2):
+        draw = ImageDraw.Draw(self.image)
+        draw.line((x1, y1, x2, y2), fill=self.FOREGROUND_COLOR)
 
-    def show_progress(self, x, y, lx, ly, current, max):
-        self.display.rect(x, y, lx, ly, Adafruit_EPD.BLACK)
+    def draw_progress(self, x, y, lx, ly, current, max):
+        draw = ImageDraw.Draw(self.image)
+        draw.rectangle((x, y, x+lx, y+ly), fill=None, outline=self.FOREGROUND_COLOR, width=1)
         
         reallx = int(lx * current // max) 
-        self.display.fill_rect(x, y, reallx, ly, Adafruit_EPD.BLACK)
+        draw.rectangle((x, y, x+reallx, y+ly), fill=self.FOREGROUND_COLOR)
+        
+        triangle_width = x + reallx + 6
+        if triangle_width > x+lx:
+            triangle_width = x+lx
+
+        triangle = [(x+reallx,y), (x+reallx,y+ly), (triangle_width,y+ly), (x+reallx,y)] 
+        draw.polygon(triangle, fill=self.FOREGROUND_COLOR)
+
 
     def show_welcome(self):
         text = "Hello!"
