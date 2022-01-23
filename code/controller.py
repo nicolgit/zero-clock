@@ -48,7 +48,7 @@ class ClockController(object):
             progressmax = (ss-sr).total_seconds()
             hours, minutes, seconds = self.convert_timedelta (ss - t)
             remaining =  "{}h{}".format(hours, minutes)
-            ss_icon = "2"
+            ss_icon = "B"
 
         if (t > ss):
             progress = (t-ss).total_seconds()
@@ -64,10 +64,9 @@ class ClockController(object):
             remaining =  "{}h{}".format(hours, minutes)
             ss_icon = "1"
 
-        self.view.show_centered_string(self.model.get_weather_temperature(), self.view.font_medium, vlineat, 50, 70)
-        self.view.show_centered_string(self.model.get_weather_humidity(), self.view.font_medium,    vlineat, 74, 70)
-        self.view.show_centered_string(remaining, self.view.font_medium,                            vlineat+8, 98, 70) 
-        self.view.draw_small_icon(ss_icon, vlineat, 98)
+        self.view.draw_icon_and_text("'", self.model.get_weather_temperature(), self.view.font_medium, vlineat, 50)
+        self.view.draw_icon_and_text("8", self.model.get_weather_humidity(), self.view.font_medium,    vlineat+2, 74)
+        self.view.draw_icon_and_text(ss_icon, remaining, self.view.font_medium,                        vlineat, 102)
 
         self.view.draw_line(vlineat, 4, vlineat, 104)
 

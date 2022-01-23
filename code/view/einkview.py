@@ -3,6 +3,7 @@ from view.baseview import BaseView
 import busio
 import board
 import digitalio
+import os
 import pyqrcode
 import png
 
@@ -28,7 +29,7 @@ class EinkView(BaseView):
         self.QRCODE_FILENAME = "/run/shm/qr.png"
         self.BORDER = 10
         self.FONTSIZE_SMALL = 12
-        self.FONTSIZE_MEDIUM = 20
+        self.FONTSIZE_MEDIUM = 18
         self.FONTSIZE_BIG = 32
         self.FONTSIZE_HUGE = 52
         self.BACKGROUND_COLOR = WHITE
@@ -64,14 +65,18 @@ class EinkView(BaseView):
         self.rst = digitalio.DigitalInOut(board.D27)
         self.busy = digitalio.DigitalInOut(board.D17)
         
-        self.FONT_PATH = "../fonts/DroidSans-Bold.ttf"
+        current_path = os.path.dirname(__file__)
+
+        print ("current path: " + current_path)
+
+        self.FONT_PATH = current_path + "/../../fonts/DroidSans-Bold.ttf"
         self.font_small = ImageFont.truetype (self.FONT_PATH, self.FONTSIZE_SMALL)
         self.font_medium = ImageFont.truetype(self.FONT_PATH, self.FONTSIZE_MEDIUM)
         self.font_big = ImageFont.truetype   (self.FONT_PATH, self.FONTSIZE_BIG)
         self.font_huge = ImageFont.truetype  (self.FONT_PATH, self.FONTSIZE_HUGE)
 
-        self.font_icons= ImageFont.truetype("../fonts/meteocons.ttf", 46)
-        self.font_icons_small= ImageFont.truetype("../fonts/meteocons.ttf", 24)
+        self.font_icons= ImageFont.truetype(current_path + "/../../fonts/meteocons.ttf", 46)
+        self.font_icons_small= ImageFont.truetype(current_path + "/../../fonts/meteocons.ttf", 20)
 
         self.display = Adafruit_SSD1675(122, 250, 
             self.spi,
@@ -125,6 +130,13 @@ class EinkView(BaseView):
             font=self.font_icons_small,
             fill=self.FOREGROUND_COLOR,
         )
+
+    def draw_icon_and_text(self, icon, text, font, x, y):
+        (icon_width, icon_height) = self.font_icons_small.getsize(icon)
+
+        draw = ImageDraw.Draw(self.image)
+        draw.text((x, y), icon, font=self.font_icons_small, fill=self.FOREGROUND_COLOR)
+        draw.text((x+icon_width, y), text, font=font, fill=self.FOREGROUND_COLOR)
 
     def show_centered_string(self, text, font, x = 0, y = None, lx = None):
         (font_width, font_height) = font.getsize(text)
