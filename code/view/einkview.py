@@ -134,6 +134,8 @@ class EinkView(BaseView):
     def draw_icon_and_text(self, icon, text, font, x, y):
         (icon_width, icon_height) = self.font_icons_small.getsize(icon)
 
+        icon_width += 2
+        
         draw = ImageDraw.Draw(self.image)
         draw.text((x, y), icon, font=self.font_icons_small, fill=self.FOREGROUND_COLOR)
         draw.text((x+icon_width, y), text, font=font, fill=self.FOREGROUND_COLOR)

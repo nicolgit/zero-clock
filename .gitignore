@@ -130,3 +130,5 @@ dmypy.json
 
 # config
 config.json
+
+__azurite_db_table__.json

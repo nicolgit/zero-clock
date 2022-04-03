@@ -28,7 +28,7 @@ class ClockController(object):
         screen_width   = 250
         screen_height  = 122 
 
-        vlineat = 180
+        vlineat = 175
         
         self.view.show_centered_string(self.model.get_weekday(), self.view.font_medium,      0, 0,  vlineat)
         self.view.show_centered_string(self.model.get_time_string(),    self.view.font_huge, 0, 20, vlineat)
@@ -64,9 +64,9 @@ class ClockController(object):
             remaining =  "{}h{}".format(hours, minutes)
             ss_icon = "1"
 
-        self.view.draw_icon_and_text("'", self.model.get_weather_temperature(), self.view.font_medium, vlineat, 50)
-        self.view.draw_icon_and_text("8", self.model.get_weather_humidity(), self.view.font_medium,    vlineat+2, 74)
-        self.view.draw_icon_and_text(ss_icon, remaining, self.view.font_medium,                        vlineat, 102)
+        self.view.show_centered_string (self.model.get_weather_temperature(), self.view.font_medium, vlineat, 50, screen_width - vlineat)
+        self.view.show_centered_string ("H" + self.model.get_weather_humidity(), self.view.font_medium, vlineat, 74, screen_width - vlineat)
+        self.view.draw_icon_and_text (ss_icon, remaining, self.view.font_medium,                        vlineat, 102)
 
         self.view.draw_line(vlineat, 4, vlineat, 104)
 
